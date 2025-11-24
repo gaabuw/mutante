@@ -101,18 +101,19 @@ public class DnaService {
     private boolean check(String[] dna, int row, int col, int dy, int dx) {
         char first = dna[row].charAt(col);
 
-        // Verificamos las 3 letras siguientes
+        //Verificamos las 3 letras siguientes
         for (int k = 1; k < SEQUENCE_LENGTH; k++) {
             // Calculamos la posición de la siguiente celda
             int nextRow = row + dy * k;
             int nextCol = col + dx * k;
 
-            // Si la letra no coincide, rompemos el ciclo
+            //Si la letra no coincide, rompemos el ciclo
             if (dna[nextRow].charAt(nextCol) != first) {
                 return false;
             }
         }
-        // Si llegamos aquí, las 4 letras eran iguales
+        //Si llegamos aca, las 4 letras eran iguales
         return true;
     }
 }
+
