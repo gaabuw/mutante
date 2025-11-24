@@ -37,7 +37,7 @@ public class DnaService {
     }
 
 
-    //LOGICA
+    //LOGICA para DETECTAR
     public boolean isMutant(String[] dna){
         if(dna == null || dna.length == 0){
             throw new IllegalArgumentException("El DNA no puede ser nulo ni vacío.");
@@ -64,31 +64,37 @@ public class DnaService {
                     return true;
                 }
 
+                char current = dna[i].charAt(j);
+
                 //horizontal desde la derecha
                 if (j + SEQUENCE_LENGTH <= n) {
-                    if (check(dna, i, j, 0, 1)) {
-                        sequenceCount++;
+                    boolean isContinuation = (j > 0) && (dna[i].charAt(j - 1) == current);//CasosEspeciales
+                    if (!isContinuation) {
+                        if (check(dna, i, j, 0, 1)) sequenceCount++;
                     }
                 }
 
                 //Vertical (abajo)
                 if (i + SEQUENCE_LENGTH <= n) {
-                    if (check(dna, i, j, 1, 0)) {
-                        sequenceCount++;
+                    boolean isContinuation = (i > 0) && (dna[i - 1].charAt(j) == current);
+                    if (!isContinuation) {
+                        if (check(dna, i, j, 1, 0)) sequenceCount++;
                     }
                 }
 
                 //Diagonal principal (abajo-derecha)
                 if (i + SEQUENCE_LENGTH <= n && j + SEQUENCE_LENGTH <= n) {
-                    if (check(dna, i, j, 1, 1)) {
-                        sequenceCount++;
+                    boolean isContinuation = (i > 0 && j > 0) && (dna[i - 1].charAt(j - 1) == current);
+                    if (!isContinuation) {
+                        if (check(dna, i, j, 1, 1)) sequenceCount++;
                     }
                 }
 
                 //Diagonal secundaria (abajo-izq)
                 if (i + SEQUENCE_LENGTH <= n && j - SEQUENCE_LENGTH >= -1) {
-                    if (check(dna, i, j, 1, -1)) {
-                        sequenceCount++;
+                    boolean isContinuation = (i > 0 && j < n - 1) && (dna[i - 1].charAt(j + 1) == current);
+                    if (!isContinuation) {
+                        if (check(dna, i, j, 1, -1)) sequenceCount++;
                     }
                 }
             }
@@ -101,9 +107,9 @@ public class DnaService {
     private boolean check(String[] dna, int row, int col, int dy, int dx) {
         char first = dna[row].charAt(col);
 
-        //Verificamos las 3 letras siguientes
+        // Verificamos las 3 letras siguientes
         for (int k = 1; k < SEQUENCE_LENGTH; k++) {
-            // Calculamos la posición de la siguiente celda
+            //Calculamos la posición de la siguiente celda
             int nextRow = row + dy * k;
             int nextCol = col + dx * k;
 
@@ -116,4 +122,3 @@ public class DnaService {
         return true;
     }
 }
-
